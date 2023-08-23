@@ -3,17 +3,18 @@ const User = require('../models/User')
 //show the list of Users 
 
 const index = (req, res, next) => {
-
-    User.find()
-    .then(response => {
-        res.json({response})
-    })
-    .catch(error => {
-        res.json({
-            message: 'error bruder'
+    User.paginate({}, { page: req.query.page, limit: req.query.limit })
+        .then(response => {
+            res.json({
+                response
+            });
         })
-    })
-}
+        .catch(error => {
+            res.json({
+                message: "An error occurred: " + error
+            });
+        });
+};
 
 const show = (req, res, next) => {
 
