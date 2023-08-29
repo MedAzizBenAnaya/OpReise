@@ -1,48 +1,44 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const morgan = require('morgan');
+const mongoose = require('mongoose');
 const cors = require('cors');
 
 
+const dotenv = require('dotenv');
 
-const dbUrl = 'mongodb://127.0.0.1:27017/pips';
-
-const UserRouter = require('./routes/user')
-const AuthRouter = require('./routes/auth')
-
-mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true })
-.then(result => console.log('DB Connection establiched !')
-).catch(err => console.error(err));
+dotenv.config();
 
 const app = express();
+const PORT = 4000;
 
-app.get('/', (req, res) => {
-    res.send( "<h1>sexy dima </h1>");
-  });
+const dbUrl = 'mongodb://127.0.0.1:27017/op'
 
-  
+const authRoutes = require("./routes/authR")
 
-app.use(morgan('dev'));
+const userRoutes = require("./routes/userR")
+ 
 
-app.use(express.urlencoded({extended: true}));
-
-app.use(express.json());
-
-app.use(cors());
-
-
-
-
-
-const PORT = process.env.PORT || 3000
-
-app.listen(PORT, () => {
-    console.log(`Slave is running port ${PORT}`)
-
+mongoose.connect(dbUrl, {useNewUrlParser: true, useUnifiedTopology: true}).then((result) => {
+ console.log('connection with DB established :)')   
+}).catch((err) => {
+    console.error(err)
 });
 
 
-app.use('/api/user', UserRouter);
-app.use('/api', AuthRouter);
+app.use(morgan('dev'));
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+
+app.use(cors())
+app.get('/', (req, res)=> {
+    res.send("<h1>dima sexy ma booooiii </h1>")
+});
 
 
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port  http://localhost:${PORT}`)
+})
+
+app.use('/auth', authRoutes);
+app.use('/user', userRoutes);
