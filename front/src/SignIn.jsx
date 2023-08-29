@@ -2,13 +2,16 @@ import React from 'react';
 import axios from 'axios';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import "@fortawesome/fontawesome-free/css/all.min.css"
+import { useNavigate } from 'react-router-dom'; 
+
+
+
 
 import {
   MDBBtn,
   MDBContainer,
   MDBCard,
   MDBCardBody,
-  MDBCardImage,
   MDBRow,
   MDBCol,
   MDBInput,
@@ -17,7 +20,10 @@ import {
 from 'mdb-react-ui-kit';
 
 function App() {
+
+    const navigate = useNavigate();
     const handlelogin = () =>{
+
     
         const email = document.getElementById('form1').value;
         const password = document.getElementById('form2').value;
@@ -25,7 +31,7 @@ function App() {
         const loginData = {email,password};
         axios.post('http://localhost:4000/auth/login', loginData).then(response => {
           console.log('login was successful:', response.data);
-          history.push('/home');
+          navigate('/dashboard')
         })
         .catch(error => {
           console.error('login error:', error);
