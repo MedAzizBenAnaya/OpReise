@@ -1,5 +1,8 @@
 import React from 'react';
 import axios from 'axios';
+
+import { useNavigate } from 'react-router-dom'; 
+
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import {
@@ -14,6 +17,7 @@ import {
 from 'mdb-react-ui-kit';
 
 function App() {
+  const navigate = useNavigate();
   const handleRegister = () =>{
     
     const name = document.getElementById('form1').value;
@@ -24,7 +28,8 @@ function App() {
     const registerData = {name, email, phone, password};
     axios.post('http://localhost:4000/auth/register', registerData).then(response => {
       console.log('registration was successful:', response.data);
-      history.push('/signin')
+      navigate('/signin');
+      
 
     })
     .catch(error => {
